@@ -14,22 +14,32 @@ This project assumes the following:
 ## Standard install via command-line
 
 **Cloning the repository and integrating in your workspace**
-```git clone https://github.com/arunumd/ROSBeginnerTuts
-Copy-paste the cloned repository inside the /src folder of your catkin workspace from the beginner tutorials```
+
+```
+git clone https://github.com/arunumd/ROSBeginnerTuts
+Copy-paste the cloned repository inside the /src folder of your catkin workspace from the beginner tutorials
+```
 
 **Sourcing the environment and running the nodes**
-In a new terminal
-```roscore```
 
 In a new terminal
-```source /opt/ros/kinetic/setup.bash
+```
+roscore
+```
+
+In a new terminal
+```
+source /opt/ros/kinetic/setup.bash
 cd ~/your-catkin-workspace-from-beginner-turorials
 source ./devel/setup.bash
 catkin_make
-rosrun beginner_tutorials talker```
+rosrun beginner_tutorials talker
+```
 
 In a new terminal
-```source /opt/ros/kinetic/setup.bash
+```
+source /opt/ros/kinetic/setup.bash
 cd ~/your-catkin-workspace-from-beginner-turorials
 source ./devel/setup.bash
-rosrun beginner_tutorials listener```
+rosrun beginner_tutorials listener
+```
