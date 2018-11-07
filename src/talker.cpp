@@ -1,7 +1,7 @@
 /************************************************************************************************
-* @file      : Implementation file for ROS beginner tutorials turtlesim talker
+* @file      : Implementation file for Week 10 exercise
 * @author    : Arun Kumar Devarajulu
-* @date      : October 28, 2018
+* @date      : November 7, 2018
 * @copyright : 2018, Arun Kumar Devarajulu
 * @license   : MIT License
 *
