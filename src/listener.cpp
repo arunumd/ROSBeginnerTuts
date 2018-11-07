@@ -28,9 +28,11 @@
 **************************************************************************************************/
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include "beginner_tutorials/service.h"
 
 void chatterCallback(const std_msgs::String::ConstPtr& msg) {
     ROS_INFO("I heard: [%s]", msg->data.c_str());
+    ROS_DEBUG_STREAM("Callback function was accessed!");
 }
 
 int main(int argc, char **argv) {

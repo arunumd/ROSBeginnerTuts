@@ -43,7 +43,7 @@ std::string message = "Message inserted by custom string ";
 bool modifyContents(beginner_tutorials::service::Request &req,
                     beginner_tutorials::service::Response &res) {
     message = req.x; // 'x' is the input string for this service
-    req.y = message; // 'y' is the output string for this service
+    res.y = message; // 'y' is the output string for this service
     ROS_INFO_STREAM("Old message is being updated");
     return true;
 }
@@ -85,14 +85,29 @@ int main(int argc, char **argv) {
     ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
 
     // Creation of a ros service and advertising the node
-    ros::ServiceServer service = nh.advertiseService("modifyContents", modifyContents);
+    ros::ServiceServer service = n.advertiseService("modifyContents", modifyContents);
 
     // The value for frequency is defined in 'beginner_tutorial.launch' file
-    int freuency;
+    int frequency;
     ROS_INFO_STREAM("Set Publish frequency in Hz:" << 20);
     frequency = std::atoi(argv[1]);  // Assign the arg value to frequency
 
-    ros::Rate loop_rate(10);
+    // Error level log message
+    if (frequency <= 3)
+        ROS_ERROR_STREAM("Bad publish frequency");
+
+    // Debug level log message
+    ROS_DEBUG_STREAM("Publish frequency is now set to: " << frequency);
+
+    // Warning level log message
+    if (frequency <= 4)
+        ROS_WARN_STREAM("That's not adequate level. Expected to be 10 Hz");
+
+    ros::Rate loop_rate(frequency);
+
+    // Fatal level log message
+    if (!ros::ok())
+        ROS_FATAL_STREAM("ROS node is not running !");
 
     /******
      *@brief  : A count of how many messages we have sent. This is used to create
@@ -106,7 +121,7 @@ int main(int argc, char **argv) {
         std_msgs::String msg;
 
         std::stringstream ss;
-        ss << "This is my first Publisher message in ROS " << count;
+        ss << message << count << "Published";
         msg.data = ss.str();
 
         ROS_INFO("%s", msg.data.c_str());
