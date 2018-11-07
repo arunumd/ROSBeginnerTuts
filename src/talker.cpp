@@ -26,8 +26,27 @@
 * @brief     : The listener.cpp will be the listener node which publishes a custom message
 **************************************************************************************************/
 #include <sstream>
+#include <string>
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include "beginner_tutorials/service.h"
+
+// @brief  : We create a string object to publishg message
+std::string message = "Message inserted by custom string ";
+
+/****
+*@brief  : Callback function for service call that changes the string contents
+*@param  : req is the request type defined in the srv file
+*@param  : res is the response type defined in the srv file
+*@return : 'true' if it works as expected
+***/
+bool modifyContents(beginner_tutorials::service::Request &req,
+                    beginner_tutorials::service::Response &res) {
+    message = req.x; // 'x' is the input string for this service
+    req.y = message; // 'y' is the output string for this service
+    ROS_INFO_STREAM("Old message is being updated");
+    return true;
+}
 
 int main(int argc, char **argv) {
     /******
