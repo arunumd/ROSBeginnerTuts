@@ -1,5 +1,6 @@
-arun@arun-HP-PC:~/catkin_ws/src/beginner_tutorials/src$ cppcheck talker.cpp 
-Checking talker.cpp...
-arun@arun-HP-PC:~/catkin_ws/src/beginner_tutorials/src$ cppcheck listener.cpp 
+arun@arun-HP-PC:~/catkin_ws/src/beginner_tutorials/src$ cppcheck *.*
 Checking listener.cpp...
+1/2 files checked 40% done
+Checking talker.cpp...
+2/2 files checked 100% done
 

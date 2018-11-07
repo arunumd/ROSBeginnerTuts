@@ -42,8 +42,8 @@ std::string message = "Message inserted by custom string ";
 ***/
 bool modifyContents(beginner_tutorials::service::Request &req,
                     beginner_tutorials::service::Response &res) {
-    message = req.x; // 'x' is the input string for this service
-    res.y = message; // 'y' is the output string for this service
+    message = req.x;  // 'x' is the input string for this service
+    res.y = message;  // 'y' is the output string for this service
     ROS_INFO_STREAM("Old message is being updated");
     return true;
 }
@@ -85,7 +85,8 @@ int main(int argc, char **argv) {
     ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
 
     // Creation of a ros service and advertising the node
-    ros::ServiceServer service = n.advertiseService("modifyContents", modifyContents);
+    ros::ServiceServer service = n.advertiseService(\
+                                 "modifyContents", modifyContents);
 
     // The value for frequency is defined in 'beginner_tutorial.launch' file
     int frequency;
