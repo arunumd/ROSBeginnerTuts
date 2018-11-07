@@ -84,6 +84,14 @@ int main(int argc, char **argv) {
      *******/
     ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
 
+    // Creation of a ros service and advertising the node
+    ros::ServiceServer service = nh.advertiseService("modifyContents", modifyContents);
+
+    // The value for frequency is defined in 'beginner_tutorial.launch' file
+    int freuency;
+    ROS_INFO_STREAM("Set Publish frequency in Hz:" << 20);
+    frequency = std::atoi(argv[1]);  // Assign the arg value to frequency
+
     ros::Rate loop_rate(10);
 
     /******
