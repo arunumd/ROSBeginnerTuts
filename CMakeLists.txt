@@ -10,8 +10,16 @@ find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs genmsg)
 ## Generate added messages and services
 generate_messages(DEPENDENCIES std_msgs)
 
+## Generate services in the 'srv' folder
+add_service_files(FILES service.srv)
+
 ## Declare a catkin package
-catkin_package()
+catkin_package(
+  INCLUDE_DIRS include
+  LIBRARIES beginner_tutorials
+  CATKIN_DEPENDS roscpp rospy std_msgs
+  DEPENDS system_lib
+)
 
 ## Build talker and listener
 include_directories(include ${catkin_INCLUDE_DIRS})
