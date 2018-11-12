@@ -1,7 +1,7 @@
 /************************************************************************************************
-* @file      : Implementation file for ROS beginner tutorials turtlesim talker
+* @file      : Implementation file for Week 10 exercise
 * @author    : Arun Kumar Devarajulu
-* @date      : October 28, 2018
+* @date      : November 7, 2018
 * @copyright : 2018, Arun Kumar Devarajulu
 * @license   : MIT License
 *
@@ -26,8 +26,27 @@
 * @brief     : The listener.cpp will be the listener node which publishes a custom message
 **************************************************************************************************/
 #include <sstream>
+#include <string>
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include "beginner_tutorials/service.h"
+
+// @brief  : We create a string object to publishg message
+std::string message = "Message inserted by custom string ";
+
+/****
+*@brief  : Callback function for service call that changes the string contents
+*@param  : req is the request type defined in the srv file
+*@param  : res is the response type defined in the srv file
+*@return : 'true' if it works as expected
+***/
+bool modifyContents(beginner_tutorials::service::Request &req,
+                    beginner_tutorials::service::Response &res) {
+    message = req.x;  // 'x' is the input string for this service
+    res.y = message;  // 'y' is the output string for this service
+    ROS_INFO_STREAM("Old message is being updated");
+    return true;
+}
 
 int main(int argc, char **argv) {
     /******
@@ -65,7 +84,31 @@ int main(int argc, char **argv) {
      *******/
     ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
 
-    ros::Rate loop_rate(10);
+    // Creation of a ros service and advertising the node
+    ros::ServiceServer service = n.advertiseService(\
+                                 "modifyContents", modifyContents);
+
+    // The value for frequency is defined in 'beginner_tutorial.launch' file
+    int frequency;
+    ROS_INFO_STREAM("Set Publish frequency in Hz:" << 20);
+    frequency = std::atoi(argv[1]);  // Assign the arg value to frequency
+
+    // Error level log message
+    if (frequency <= 3)
+        ROS_ERROR_STREAM("Bad publish frequency");
+
+    // Debug level log message
+    ROS_DEBUG_STREAM("Publish frequency is now set to: " << frequency);
+
+    // Warning level log message
+    if (frequency <= 4)
+        ROS_WARN_STREAM("That's not adequate level. Expected to be 10 Hz");
+
+    ros::Rate loop_rate(frequency);
+
+    // Fatal level log message
+    if (!ros::ok())
+        ROS_FATAL_STREAM("ROS node is not running !");
 
     /******
      *@brief  : A count of how many messages we have sent. This is used to create
@@ -79,7 +122,7 @@ int main(int argc, char **argv) {
         std_msgs::String msg;
 
         std::stringstream ss;
-        ss << "This is my first Publisher message in ROS " << count;
+        ss << message << count << "Published";
         msg.data = ss.str();
 
         ROS_INFO("%s", msg.data.c_str());

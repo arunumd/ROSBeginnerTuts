@@ -1,7 +1,7 @@
 /************************************************************************************************
-* @file      : Implementation file for ROS beginner tutorials turtlesim listener
+* @file      : Implementation file for Week 10 exercise
 * @author    : Arun Kumar Devarajulu
-* @date      : October 28, 2018
+* @date      : November 7, 2018
 * @copyright : 2018, Arun Kumar Devarajulu
 * @license   : MIT License
 *
@@ -28,9 +28,11 @@
 **************************************************************************************************/
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include "beginner_tutorials/service.h"
 
 void chatterCallback(const std_msgs::String::ConstPtr& msg) {
     ROS_INFO("I heard: [%s]", msg->data.c_str());
+    ROS_DEBUG_STREAM("Callback function was accessed!");
 }
 
 int main(int argc, char **argv) {

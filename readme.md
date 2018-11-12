@@ -1,5 +1,5 @@
 # ROSBeginnerTuts
-This is my practice work done based on the beginner ROS tutorials found on ros wiki page
+This is the Week 10 exercise about adding ROS Log messages, creating a service and finding logs on rqt graph.
 
 ## Overview
 This repository contains a publisher - subscriber communication interface in ROS. The publisher node registers itself with the ROS master (roscore) and then broadcasts a simple message on a topic called "chatter". The listener node subscribes to the broadcasted topic and prints out the received message on the screen.
@@ -16,8 +16,15 @@ This project assumes the following:
 **Cloning the repository and integrating in your workspace**
 
 ```
-git clone https://github.com/arunumd/ROSBeginnerTuts
-Copy-paste the cloned repository inside the /src folder of your catkin workspace from the beginner tutorials
+mkdir catkin_ws
+cd catkin_ws
+mkdir src
+catkin_make
+cd src
+git clone -b Week10_HW https://github.com/arunumd/ROSBeginnerTuts.git
+git checkout Week10_HW
+cd..
+catkin_make
 ```
 
 **Sourcing the environment and running the nodes**
@@ -30,16 +37,15 @@ roscore
 In a new terminal
 ```
 source /opt/ros/kinetic/setup.bash
-cd ~/your-catkin-workspace-from-beginner-turorials
+cd ~/catkin_ws
 source ./devel/setup.bash
-catkin_make
-rosrun beginner_tutorials talker
+rosrun beginner_tutorials talker 10
 ```
 
 In a new terminal
 ```
 source /opt/ros/kinetic/setup.bash
-cd ~/your-catkin-workspace-from-beginner-turorials
+cd ~/catkin_ws
 source ./devel/setup.bash
 rosrun beginner_tutorials listener
 ```
