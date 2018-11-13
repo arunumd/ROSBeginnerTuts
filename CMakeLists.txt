@@ -92,7 +92,7 @@ if(CATKIN_ENABLE_TESTING)
 
   add_rostest_gtest(
   service_client
-  launch/service_client.launch
+  launch/service.launch
   test/service_client.cpp
   )
   target_link_libraries(
