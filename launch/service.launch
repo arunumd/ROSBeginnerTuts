@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+  <node pkg="simple_rostest" name="service" type="service" />
+  <test pkg="simple_rostest" test-name="service_client" type="service_client" />
+</launch>
