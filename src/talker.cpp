@@ -29,6 +29,7 @@
 #include <string>
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include <tf/transform_broadcaster.h>
 #include "beginner_tutorials/service.h"
 
 // @brief  : We create a string object to publishg message
@@ -42,103 +43,119 @@ std::string message = "Message inserted by custom string ";
 ***/
 bool modifyContents(beginner_tutorials::service::Request &req,
                     beginner_tutorials::service::Response &res) {
-    message = req.x;  // 'x' is the input string for this service
-    res.y = message;  // 'y' is the output string for this service
-    ROS_INFO_STREAM("Old message is being updated");
-    return true;
+	message = req.x;  // 'x' is the input string for this service
+	res.y = message;  // 'y' is the output string for this service
+	ROS_INFO_STREAM("Old message is being updated");
+	return true;
 }
 
 int main(int argc, char **argv) {
-    /******
-     *@brief  : The ros::init() function needs to see argc and argv so that it can perform
-     *          any ROS arguments and name remapping that were provided at the command line.
-     *          For programmatic remappings you can use a different version of init() which takes
-     *          remappings directly, but for most command-line programs, passing argc and argv is
-     *          the easiest way to do it.  The third argument to init() is the name of the node.
-     *
-     *          You must call one of the versions of ros::init() before using any other
-     *          part of the ROS system.
-     ********/
-    ros::init(argc, argv, "talker");
+	/******
+	 *@brief  : The ros::init() function needs to see argc and argv so that it can perform
+	 *          any ROS arguments and name remapping that were provided at the command line.
+	 *          For programmatic remappings you can use a different version of init() which takes
+	 *          remappings directly, but for most command-line programs, passing argc and argv is
+	 *          the easiest way to do it.  The third argument to init() is the name of the node.
+	 *
+	 *          You must call one of the versions of ros::init() before using any other
+	 *          part of the ROS system.
+	 ********/
+	ros::init(argc, argv, "talker");
 
-    /******
-     *@brief  : NodeHandle is the main access point to communications with the ROS system.
-     *          The first NodeHandle constructed will fully initialize this node, and the last
-     *          NodeHandle destructed will close down the node.
-     ********/
-    ros::NodeHandle n;
+	/******
+	 *@brief  : NodeHandle is the main access point to communications with the ROS system.
+	 *          The first NodeHandle constructed will fully initialize this node, and the last
+	 *          NodeHandle destructed will close down the node.
+	 ********/
+	ros::NodeHandle n;
 
-    /******
-     *@brief  : The advertise() function is how you tell ROS that you want to publish on a
-     *          given topic name. This invokes a call to the ROS master node, which keeps a
-     *          registry of who is publishing and who is subscribing. After this advertise()
-     *          call is made, the master node will notify anyone who is trying to subscribe to
-     *          this topic name, and they will in turn negotiate a peer-to-peer connection with
-     *          this node. advertise() returns a Publisher object which allows you to publish
-     *          messages on that topic through a call to publish(). Once all copies of the
-     *          returned Publisher object are destroyed, the topic will be automatically unadvertised.
-     *
-     *          The second parameter to advertise() is the size of the message queue used for
-     *          publishing messages.  If messages are published more quickly than we can send them,
-     *          the number here specifies how many messages to buffer up before throwing some away.
-     *******/
-    ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
+	/******
+	 *@brief  : The advertise() function is how you tell ROS that you want to publish on a
+	 *          given topic name. This invokes a call to the ROS master node, which keeps a
+	 *          registry of who is publishing and who is subscribing. After this advertise()
+	 *          call is made, the master node will notify anyone who is trying to subscribe to
+	 *          this topic name, and they will in turn negotiate a peer-to-peer connection with
+	 *          this node. advertise() returns a Publisher object which allows you to publish
+	 *          messages on that topic through a call to publish(). Once all copies of the
+	 *          returned Publisher object are destroyed, the topic will be automatically unadvertised.
+	 *
+	 *          The second parameter to advertise() is the size of the message queue used for
+	 *          publishing messages.  If messages are published more quickly than we can send them,
+	 *          the number here specifies how many messages to buffer up before throwing some away.
+	 *******/
+	ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
 
-    // Creation of a ros service and advertising the node
-    ros::ServiceServer service = n.advertiseService(\
-                                 "modifyContents", modifyContents);
+	// Creation of a ros service and advertising the node
+	ros::ServiceServer service = n.advertiseService(\
+	                             "modifyContents", modifyContents);
 
-    // The value for frequency is defined in 'beginner_tutorial.launch' file
-    int frequency;
-    ROS_INFO_STREAM("Set Publish frequency in Hz:" << 20);
-    frequency = std::atoi(argv[1]);  // Assign the arg value to frequency
+	// The value for frequency is defined in 'beginner_tutorial.launch' file
+	int frequency;
+	ROS_INFO_STREAM("Set Publish frequency in Hz:" << 20);
+	frequency = std::atoi(argv[1]);  // Assign the arg value to frequency
 
-    // Error level log message
-    if (frequency <= 3)
-        ROS_ERROR_STREAM("Bad publish frequency");
+	// Error level log message
+	if (frequency <= 3)
+		ROS_ERROR_STREAM("Bad publish frequency");
 
-    // Debug level log message
-    ROS_DEBUG_STREAM("Publish frequency is now set to: " << frequency);
+	// Debug level log message
+	ROS_DEBUG_STREAM("Publish frequency is now set to: " << frequency);
 
-    // Warning level log message
-    if (frequency <= 4)
-        ROS_WARN_STREAM("That's not adequate level. Expected to be 10 Hz");
+	// Warning level log message
+	if (frequency <= 4)
+		ROS_WARN_STREAM("That's not adequate level. Expected to be 10 Hz");
 
-    ros::Rate loop_rate(frequency);
+	ros::Rate loop_rate(frequency);
 
-    // Fatal level log message
-    if (!ros::ok())
-        ROS_FATAL_STREAM("ROS node is not running !");
+	// Fatal level log message
+	if (!ros::ok())
+		ROS_FATAL_STREAM("ROS node is not running !");
 
-    /******
-     *@brief  : A count of how many messages we have sent. This is used to create
-     *          a unique string for each message.
-     *******/
-    int count = 0;
-    while (ros::ok()) {
-        /******
-         *@brief  : This is a message object. You stuff it with data, and then publish it.
-         *******/
-        std_msgs::String msg;
+	/* Create a transfrorm object*/
+	tf::Transform transform;
 
-        std::stringstream ss;
-        ss << message << count << "Published";
-        msg.data = ss.str();
+	/* Create a transform broadcaster object*/
+	tf::TransformBroadcaster br;
 
-        ROS_INFO("%s", msg.data.c_str());
+	/******
+	 *@brief  : A count of how many messages we have sent. This is used to create
+	 *          a unique string for each message.
+	 *******/
+	int count = 0;
+	while (ros::ok()) {
+		/******
+		 *@brief  : This is a message object. You stuff it with data, and then publish it.
+		 *******/
+		std_msgs::String msg;
 
-        /******
-         *@brief  : The publish() function is how you send messages. The parameter
-         *          is the message object. The type of this object must agree with the type
-         *          given as a template parameter to the advertise<>() call, as was done
-         *          in the constructor above.
-         *******/
-        chatter_pub.publish(msg);
+		std::stringstream ss;
+		ss << message << count << "Published";
+		msg.data = ss.str();
 
-        ros::spinOnce();
+		ROS_INFO("%s", msg.data.c_str());
 
-        loop_rate.sleep();
-        ++count;
-    }
-    return 0;
+		/******
+		 *@brief  : The publish() function is how you send messages. The parameter
+		 *          is the message object. The type of this object must agree with the type
+		 *          given as a template parameter to the advertise<>() call, as was done
+		 *          in the constructor above.
+		 *******/
+		chatter_pub.publish(msg);
+
+		/* Set translation with non-zero values*/
+		transform.setOrigin(tf::Vector3(10, 20, 35));
+		/* Set rotation with non-zero values*/
+		tf::Quaternion q;
+		q.setRPY(34, 13, 18);
+		transform.setRotation(q);
+
+		/* Now send the transform*/
+		br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "talk"));
+
+		ros::spinOnce();
+
+		loop_rate.sleep();
+		++count;
+	}
+	return 0;
 }
