@@ -1,7 +1,8 @@
 #include <ros/ros.h>
 #include <ros/service_client.h>
 #include <gtest/gtest.h>
-#include <simple_rostest/service.h>
+#include "std_msgs/String.h"
+#include <beginner_tutorials/service.h>
 
 TEST(ServiceTest, service)
 {
@@ -20,7 +21,7 @@ TEST(ServiceTest, service)
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "change_string_service_client");
+    ros::init(argc, argv, "testTalker");
     n.reset(new ros::NodeHandle);
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

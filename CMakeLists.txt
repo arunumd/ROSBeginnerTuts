@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(beginner_tutorials)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11 -Wall -Wextra)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -27,7 +27,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate services in the 'srv' folder
  add_service_files(
    FILES
-	service.srv
+   service.srv
  )
 
 
@@ -50,7 +50,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES beginner_tutorials
   CATKIN_DEPENDS roscpp rospy std_msgs message_runtime
-  DEPENDS system_lib
+  #DEPENDS system_lib
 )
 
 #####################################
@@ -91,19 +91,14 @@ if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
 
   add_rostest_gtest(
-  service_client
-  launch/service.launch
+  testTalker
+  test/test.launch
   test/test.cpp
   )
   target_link_libraries(
-  service_client
+  testTalker
   ${catkin_LIBRARIES}
   )
-  add_dependencies(
-  service_client
-  service
-  ${PROJECT_NAME}_generate_messages_cpp
-  ${catkin_EXPORTED_TARGETS}
-  )
+
 endif()
 
