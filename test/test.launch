@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <launch>
   <node pkg="beginner_tutorials" name="testTalker" type="testTalker" launch-prefix="xterm -e"/>
+  <node pkg="beginner_tutorials" name="talker" type="talker" launch-prefix="xterm -e"/>
   <test pkg="beginner_tutorials" test-name="testTalker" type="testTalker" />
 </launch>
