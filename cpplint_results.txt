@@ -1,8 +1,3 @@
 arun@arun-HP-PC:~/catkin_ws/src/beginner_tutorials/src$ cpplint *.*
 Done processing listener.cpp
-talker.cpp:35:  Static/global string variables are not permitted.  [runtime/string] [4]
-talker.cpp:43:  Is this a non-const reference? If so, make const or use a pointer: beginner_tutorials::service::Request &req  [runtime/references] [2]
-talker.cpp:44:  Is this a non-const reference? If so, make const or use a pointer: beginner_tutorials::service::Response &res  [runtime/references] [2]
 Done processing talker.cpp
-Total errors found: 3
-
