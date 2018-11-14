@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(beginner_tutorials)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11 -Wall -Wextra)
 
@@ -14,6 +16,8 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   tf
 )
+
+include_directories(${GTEST_INCLUDE_DIRS})
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -81,7 +85,7 @@ include_directories(
 
 add_executable(talker src/talker.cpp)
 target_link_libraries(talker ${catkin_LIBRARIES})
-add_dependencies(talker beginner_tutorials_generate_messages_cpp ${simple_rostest_EXPORTED_TARGETS})
+add_dependencies(talker beginner_tutorials_generate_messages_cpp ${beginner_tutorials_EXPORTED_TARGETS})
 
 add_executable(listener src/listener.cpp)
 target_link_libraries(listener ${catkin_LIBRARIES})
@@ -97,7 +101,7 @@ if(CATKIN_ENABLE_TESTING)
   )
   target_link_libraries(
   testTalker
-  ${catkin_LIBRARIES}
+  ${catkin_LIBRARIES} ${GTEST_LIBRARIES} pthread
   )
 
 endif()

@@ -4,18 +4,21 @@
 #include "std_msgs/String.h"
 #include <beginner_tutorials/service.h>
 
-TEST(ServiceTest, service)
+std::shared_ptr<ros::NodeHandle> n;
+
+TEST(TESTTalker, service)
 {
-    ros::ServiceClient client = n->serviceClient<simple_rostest::service>(
-                                    "change_string");
+    ros::NodeHandle n;
+    ros::ServiceClient client = n.serviceClient<beginner_tutorials::service>(
+                                    "service");
     bool exists(client.waitForExistence(ros::Duration(1)));
     EXPECT_TRUE(exists);
 
-    simple_rostest::service srv;
+    beginner_tutorials::service srv;
     srv.request.x = "History is getting updated";
     client.call(srv);
 
-    EXPECT_STRNE(srv.response.y, srv.request.x);
+    EXPECT_NE(srv.response.y, srv.request.x);
 
 }
 
