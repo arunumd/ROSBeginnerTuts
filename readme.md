@@ -23,7 +23,6 @@ mkdir src
 catkin_make
 cd src
 git clone -b Week11_HW https://github.com/arunumd/ROSBeginnerTuts.git
-git checkout Week11_HW
 cd..
 catkin_make
 ```
