@@ -1,7 +1,7 @@
 /************************************************************************************************
-* @file      : Implementation file for Week 10 exercise
+* @file      : Implementation file for Week 11 exercise
 * @author    : Arun Kumar Devarajulu
-* @date      : November 7, 2018
+* @date      : November 13, 2018
 * @copyright : 2018, Arun Kumar Devarajulu
 * @license   : MIT License
 *
@@ -25,15 +25,15 @@
 *
 * @brief     : The listener.cpp will be the listener node which publishes a custom message
 **************************************************************************************************/
+#include <tf/transform_broadcaster.h>
 #include <sstream>
 #include <string>
+#include "beginner_tutorials/service.h"
 #include "ros/ros.h"
 #include "std_msgs/String.h"
-#include <tf/transform_broadcaster.h>
-#include "beginner_tutorials/service.h"
 
 // @brief  : We create a string object to publishg message
-std::string message = "Message inserted by custom string ";
+std::string message = "Message inserted by custom string ";  //NOLINT
 
 /****
 *@brief  : Callback function for service call that changes the string contents
@@ -41,8 +41,8 @@ std::string message = "Message inserted by custom string ";
 *@param  : res is the response type defined in the srv file
 *@return : 'true' if it works as expected
 ***/
-bool modifyContents(beginner_tutorials::service::Request &req,
-                    beginner_tutorials::service::Response &res) {
+bool modifyContents(beginner_tutorials::service::Request &req, //NOLINT
+                    beginner_tutorials::service::Response &res) { //NOLINT
     message = req.x;  // 'x' is the input string for this service
     res.y = message;  // 'y' is the output string for this service
     ROS_INFO_STREAM("Old message is being updated");
@@ -150,7 +150,8 @@ int main(int argc, char **argv) {
         transform.setRotation(q);
 
         /* Now send the transform*/
-        br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "talk"));
+        br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), \
+                                              "world", "talk"));
 
         ros::spinOnce();
 
